@@ -131,7 +131,7 @@ func resolvePuppetEnvironment(tags bool, outputNameTag string) {
 							if len(sa.StripComponent) != 0 {
 								stripRenamedBranch := stripComponent(sa.StripComponent, renamedBranch)
 								if stripRenamedBranch != renamedBranch {
-									// only print this if the branch was definately renamed, because of the strip component
+									// only print this if the branch was definitely renamed, because of the strip component
 									Debugf("Renaming branch " + renamedBranch + " to " + stripRenamedBranch + ", because of strip_component in source " + source + " " + sa.Remote)
 									renamedBranch = stripRenamedBranch
 								}
@@ -217,10 +217,9 @@ func resolvePuppetEnvironment(tags bool, outputNameTag string) {
 			Warnf("WARNING: Environment '" + environmentParam + "' cannot be found in any source and will not be deployed.")
 		}
 	}
-	//fmt.Println("allPuppetfiles: ", allPuppetfiles, len(allPuppetfiles))
-	//fmt.Println("allPuppetfiles[0]: ", allPuppetfiles["postinstall"])
+
 	resolvePuppetfile(allPuppetfiles)
-	//fmt.Printf("%+v\n", allEnvironments)
+
 	if len(moduleParam) == 0 {
 		purgeUnmanagedContent(allBasedirs, allEnvironments)
 	}

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -125,10 +124,7 @@ func doMirrorOrUpdate(gitModule GitModule, workDir string, retryCount int) bool 
 	}
 
 	// check if git URL does match NO_PROXY
-	disableHttpProxy := false
-	if matchGitRemoteURLNoProxy(gitModule.git) {
-		disableHttpProxy = true
-	}
+	disableHttpProxy := matchGitRemoteURLNoProxy(gitModule.git)
 
 	if explicitlyLoadSSHKey {
 		sshAddCmd := "ssh-add "
@@ -208,7 +204,7 @@ func syncToModuleDir(gitModule GitModule, srcDir string, targetDir string, corre
 				}
 			}
 		} else {
-			targetHashByte, _ := ioutil.ReadFile(hashFile)
+			targetHashByte, _ := os.ReadFile(hashFile)
 			targetHash := string(targetHashByte)
 			Debugf("string content of " + hashFile + " is: " + targetHash)
 			if targetHash == commitHash {
@@ -292,8 +288,8 @@ func syncToModuleDir(gitModule GitModule, srcDir string, targetDir string, corre
 			err = cmd.Wait()
 			if err != nil {
 				Fatalf("syncToModuleDir(): Failed to execute command: git --git-dir " + srcDir + " archive " + gitModule.tree + " Error: " + err.Error())
-				//"\nIf you are using GitLab please ensure that you've added your deploy key to your repository." +
-				//"\nThe Puppet environment which is using this unresolveable repository is " + correspondingPuppetEnvironment)
+				//"\nIf you are using GitLab please ensure that you've added your deployment key to your repository." +
+				//"\nThe Puppet environment which is using this unresolvable repository is " + correspondingPuppetEnvironment)
 			}
 
 			Verbosef("syncToModuleDir(): Executing git --git-dir " + srcDir + " archive " + gitModule.tree + " took " + strconv.FormatFloat(duration, 'f', 5, 64) + "s")

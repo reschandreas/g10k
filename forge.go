@@ -306,7 +306,7 @@ func getMetadataForgeModule(fm ForgeModule) ForgeModule {
 	defer resp.Body.Close()
 
 	if resp.StatusCode == http.StatusOK {
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 
 		if err != nil {
 			Fatalf("getMetadataForgeModule(): Error while reading response body for Forge module " + fm.name + " from " + url + ": " + err.Error())
@@ -454,7 +454,7 @@ func downloadForgeModule(name string, version string, fm ForgeModule, retryCount
 
 // readModuleMetadata returns the Forgemodule struct of the given module file path
 func readModuleMetadata(file string) ForgeModule {
-	content, _ := ioutil.ReadFile(file)
+	content, _ := os.ReadFile(file)
 
 	before := time.Now()
 	name := gjson.Get(string(content), "name").String()

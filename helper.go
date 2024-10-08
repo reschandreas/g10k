@@ -97,10 +97,7 @@ func isDir(dir string) bool {
 	if os.IsNotExist(err) {
 		return false
 	}
-	if fi.Mode().IsDir() {
-		return true
-	}
-	return false
+	return fi.Mode().IsDir()
 }
 
 // normalizeDir removes from the given directory path multiple redundant slashes and removes a trailing slash
@@ -331,13 +328,13 @@ func readDeployResultFile(file string) DeployResult {
 	}
 	defer jsonFile.Close()
 
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	if err != nil {
 		Warnf("Could not read JSON file " + file + " " + err.Error())
 	}
 
 	var dr DeployResult
-	json.Unmarshal([]byte(byteValue), &dr)
+	json.Unmarshal(byteValue, &dr)
 
 	return dr
 

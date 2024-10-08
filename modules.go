@@ -25,7 +25,7 @@ func unTar(r io.Reader, targetBaseDir string) {
 		filename := header.Name
 		// check if currently extracting archive is a forge or a git module
 		// we need to remove the module name from the filename otherwise the skiplist pattern would not match
-		// e.g puppetlabs-stdlib-6.0.0/MAINTAINERS.md for a forge module
+		// e.g. puppetlabs-stdlib-6.0.0/MAINTAINERS.md for a forge module
 		// and MAINTAINERS.md for a git module
 		skiplistFilename := filename
 		if targetBaseDir == config.ForgeCacheDir {
